@@ -25,6 +25,8 @@ var DEFAULT_OPTIONS = {
  * @returns {Promise}
  */
 function builder(options) {
+  console.log('builder :::::', options)
+
   options = _.extend({}, DEFAULT_OPTIONS, options);
   options.ascent = 1024 - options.descent;
 
@@ -32,6 +34,7 @@ function builder(options) {
   return fillIcons(options)
     .then(function(icons) {
       options.icons = icons;
+
       return generator(options);
     })
     .then(function(data) {
@@ -92,7 +95,7 @@ function fillIcons(options) {
         def.reject(new Error('icon ' + icon.file + ' has no name'));
         return false;
       }
-      
+
       // 如果没有编码，则进行自动生成
       if (!icon.codepoint) {
         while(codeSet.indexOf(baseCode) > -1) {
@@ -101,7 +104,7 @@ function fillIcons(options) {
         icon.codepoint = baseCode++;
       }
       icon.xmlCode = '&#x' + icon.codepoint.toString(16) + ';';
-
+      icon.cssCode = '\\' + icon.codepoint.toString(16);
       // 有 d 的前提下可以不写 file
       if (!options.readFiles && !icon.d) {
         def.reject(new Error('icon ' + icon.name + ' has no path data(d)'));

@@ -58,7 +58,7 @@ function generateSvg(icons, svgOpts, options) {
         var iconFile = path.join(options.src, icon.file);
         glyph = fs.createReadStream(iconFile);
       }
-      
+
       glyph.metadata = {
         name: icon.name,
         unicode: [String.fromCharCode(icon.codepoint)]
@@ -116,6 +116,7 @@ function generateHtml(options) {
   return Q.nfcall(fs.readFile, tmpPath, 'utf-8')
     .then(function(source) {
       var template = handlebars.compile(source);
+      console.log('templdate:::', template, options)
       return template(options);
     });
 }

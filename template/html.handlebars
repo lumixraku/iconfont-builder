@@ -95,6 +95,15 @@
       </li>
       {{/each}}
     </ul>
+    <ul class="icon_css_lists">
+      {{#each icons}}
+      <li>
+        <p>.{{name}}:before{</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;content:'{{cssCode}}';</p>
+        <p>}</p>
+      </li>
+      {{/each}}
+    </ul>
     <div class="helps">
       第一步：使用font-face声明字体
       <pre>

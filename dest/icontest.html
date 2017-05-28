@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>IconFont</title>
+  <style>
+    *{margin: 0;padding: 0;list-style: none;}
+    body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,
+    dl, dt, dd, ul, ol, li,
+    pre,
+    form, fieldset, legend, button, input, textarea,
+    th, td {
+      margin: 0;
+      padding: 0;
+    }
+    body,
+    button, input, select, textarea {
+      font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+    address, cite, dfn, em, var { font-style: normal; }
+    code, kbd, pre, samp { font-family: courier new, courier, monospace; }
+    small { font-size: 12px; }
+    ul, ol { list-style: none; }
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    legend { color: #000; }
+    fieldset, img { border: 0; }
+    button, input, select, textarea { font-size: 100%; }
+    table { border-collapse: collapse; border-spacing: 0; }
+    .ks-clear:after, .clear:after {
+      content: '\20';
+      display: block;
+      height: 0;
+      clear: both;
+    }
+    .ks-clear, .clear {
+      *zoom: 1;
+    }
+    .main {padding: 30px 100px;}
+    .main h1{font-size:36px; color:#333; text-align:left;margin-bottom:30px; border-bottom: 1px solid #eee;}
+    .helps{margin-top:40px;}
+    .helps pre{
+      padding:20px;
+      margin:10px 0;
+      border:solid 1px #e7e1cd;
+      background-color: #fffdef;
+      overflow: auto;
+    }
+    .icon_lists li{
+      float:left;
+      width: 100px;
+      height:180px;
+      text-align: center;
+    }
+    .icon_lists .icon{
+      font-size: 42px;
+      line-height: 100px;
+      margin: 10px 0;
+      color:#333;
+      -webkit-transition: font-size 0.25s ease-out 0s;
+      -moz-transition: font-size 0.25s ease-out 0s;
+      transition: font-size 0.25s ease-out 0s;
+    }
+    .icon_lists .icon:hover{
+      font-size: 100px;
+    }
+    @font-face {font-family: "iconfont";
+      src: url('iconfont.eot?t=1495962151120'); /* IE9*/
+      src: url('iconfont.eot?t=1495962151120#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('iconfont.woff?t=1495962151120') format('woff'), /* chrome, firefox */
+      url('iconfont.ttf?t=1495962151120') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+      url('iconfont.svg?t=1495962151120#iconfont') format('svg'); /* iOS 4.1- */
+    }
+    .iconfont {
+      font-family: "iconfont" !important;
+      font-size: 16px;
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-stroke-width: 0.2px;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+.Group:before{
+    content:'\e000';
+}
+.ad:before{
+    content:'\e001';
+}
+.add:before{
+    content:'\e002';
+}
+.add_sample:before{
+    content:'\e003';
+}
+.app:before{
+    content:'\e004';
+}
+.cellphone:before{
+    content:'\e005';
+}
+.checkbox:before{
+    content:'\e006';
+}
+.checkbox_checked:before{
+    content:'\e007';
+}
+.contactus:before{
+    content:'\e008';
+}
+.copy:before{
+    content:'\e009';
+}
+.copy2:before{
+    content:'\e00a';
+}
+.cross2:before{
+    content:'\e00b';
+}
+.data:before{
+    content:'\e00c';
+}
+.delete:before{
+    content:'\e00d';
+}
+.deselect:before{
+    content:'\e00e';
+}
+.drag:before{
+    content:'\e00f';
+}
+.edit:before{
+    content:'\e010';
+}
+.edit_publish:before{
+    content:'\e011';
+}
+.editor_bold:before{
+    content:'\e012';
+}
+.editor_center:before{
+    content:'\e013';
+}
+.editor_color:before{
+    content:'\e014';
+}
+.editor_fontsize:before{
+    content:'\e015';
+}
+.editor_italic:before{
+    content:'\e016';
+}
+.editor_left:before{
+    content:'\e017';
+}
+.editor_link:before{
+    content:'\e018';
+}
+.editor_richicon:before{
+    content:'\e019';
+}
+.editor_right:before{
+    content:'\e01a';
+}
+.editor_underline:before{
+    content:'\e01b';
+}
+.editor_unlink:before{
+    content:'\e01c';
+}
+.editpreview:before{
+    content:'\e01d';
+}
+.group_off:before{
+    content:'\e01e';
+}
+.group_on:before{
+    content:'\e01f';
+}
+.last_step:before{
+    content:'\e020';
+}
+.left_arrow:before{
+    content:'\e021';
+}
+.link:before{
+    content:'\e022';
+}
+.movedown:before{
+    content:'\e023';
+}
+.moveup:before{
+    content:'\e024';
+}
+.music:before{
+    content:'\e025';
+}
+.nav_logo:before{
+    content:'\e026';
+}
+.next_step:before{
+    content:'\e027';
+}
+.permission:before{
+    content:'\e028';
+}
+.preview:before{
+    content:'\e029';
+}
+.radio:before{
+    content:'\e02a';
+}
+.radio_hover:before{
+    content:'\e02b';
+}
+.refresh:before{
+    content:'\e02c';
+}
+.remind_small:before{
+    content:'\e02d';
+}
+.return_home:before{
+    content:'\e02e';
+}
+.save:before{
+    content:'\e02f';
+}
+.search:before{
+    content:'\e030';
+}
+.selectall:before{
+    content:'\e031';
+}
+.setting:before{
+    content:'\e032';
+}
+.shear:before{
+    content:'\e033';
+}
+.telphone:before{
+    content:'\e034';
+}
+.telphone_left:before{
+    content:'\e035';
+}
+.telphone_right:before{
+    content:'\e036';
+}
+.theme_color:before{
+    content:'\e037';
+}
+.up_down:before{
+    content:'\e038';
+}
+.user:before{
+    content:'\e039';
+}
+.web_shear_img:before{
+    content:'\e03a';
+}
+.web_shear_me:before{
+    content:'\e03b';
+}
+
+  </style>
+</head>
+<body>
+  <div class="main">
+    <h1>IconFont 图标</h1>
+    <ul class="icon_lists clear">
+
+<li><i class="iconfont Group"></i></li>
+<li><i class="iconfont ad"></i></li>
+<li><i class="iconfont add"></i></li>
+<li><i class="iconfont add_sample"></i></li>
+<li><i class="iconfont app"></i></li>
+<li><i class="iconfont cellphone"></i></li>
+<li><i class="iconfont checkbox"></i></li>
+<li><i class="iconfont checkbox_checked"></i></li>
+<li><i class="iconfont contactus"></i></li>
+<li><i class="iconfont copy"></i></li>
+<li><i class="iconfont copy2"></i></li>
+<li><i class="iconfont cross2"></i></li>
+<li><i class="iconfont data"></i></li>
+<li><i class="iconfont delete"></i></li>
+<li><i class="iconfont deselect"></i></li>
+<li><i class="iconfont drag"></i></li>
+<li><i class="iconfont edit"></i></li>
+<li><i class="iconfont edit_publish"></i></li>
+<li><i class="iconfont editor_bold"></i></li>
+<li><i class="iconfont editor_center"></i></li>
+<li><i class="iconfont editor_color"></i></li>
+<li><i class="iconfont editor_fontsize"></i></li>
+<li><i class="iconfont editor_italic"></i></li>
+<li><i class="iconfont editor_left"></i></li>
+<li><i class="iconfont editor_link"></i></li>
+<li><i class="iconfont editor_richicon"></i></li>
+<li><i class="iconfont editor_right"></i></li>
+<li><i class="iconfont editor_underline"></i></li>
+<li><i class="iconfont editor_unlink"></i></li>
+<li><i class="iconfont editpreview"></i></li>
+<li><i class="iconfont group_off"></i></li>
+<li><i class="iconfont group_on"></i></li>
+<li><i class="iconfont last_step"></i></li>
+<li><i class="iconfont left_arrow"></i></li>
+<li><i class="iconfont link"></i></li>
+<li><i class="iconfont movedown"></i></li>
+<li><i class="iconfont moveup"></i></li>
+<li><i class="iconfont music"></i></li>
+<li><i class="iconfont nav_logo"></i></li>
+<li><i class="iconfont next_step"></i></li>
+<li><i class="iconfont permission"></i></li>
+<li><i class="iconfont preview"></i></li>
+<li><i class="iconfont radio"></i></li>
+<li><i class="iconfont radio_hover"></i></li>
+<li><i class="iconfont refresh"></i></li>
+<li><i class="iconfont remind_small"></i></li>
+<li><i class="iconfont return_home"></i></li>
+<li><i class="iconfont save"></i></li>
+<li><i class="iconfont search"></i></li>
+<li><i class="iconfont selectall"></i></li>
+<li><i class="iconfont setting"></i></li>
+<li><i class="iconfont shear"></i></li>
+<li><i class="iconfont telphone"></i></li>
+<li><i class="iconfont telphone_left"></i></li>
+<li><i class="iconfont telphone_right"></i></li>
+<li><i class="iconfont theme_color"></i></li>
+<li><i class="iconfont up_down"></i></li>
+<li><i class="iconfont user"></i></li>
+<li><i class="iconfont web_shear_img"></i></li>
+<li><i class="iconfont web_shear_me"></i></li>
+
+    </ul>
+    <ul class="icon_lists clear">
+      <li>
+        <p>www-font-o:before{</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;content:&amp;#xe000;</p>
+        <p>}</p>
+      </li>
+      <li>
+        <p>www-font-p:before{</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;content:&amp;#xe001;</p>
+        <p>}</p>
+      </li>
+      <li>
+        <p>www-font-q:before{</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;content:&amp;#xe002;</p>
+        <p>}</p>
+      </li>
+    </ul>
+    <div class="helps">
+      第一步：使用font-face声明字体
+      <pre>
+  @font-face {font-family: 'iconfont';
+    src: url('iconfont.eot'); /* IE9*/
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+  }
+      </pre>
+      第二步：定义使用iconfont的样式
+      <pre>
+  .iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
+      </pre>
+      第三步：挑选相应图标并获取字体编码，应用于页面
+      <pre>
+  &lt;i class="iconfont"&gt;&amp;#x33;&lt;/i&gt;
+      </pre>
+    </div>
+  </div>
+</body>
+</html>

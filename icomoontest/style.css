@@ -1,0 +1,243 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?2en4vy');
+  src:  url('fonts/icomoon.eot?2en4vy#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?2en4vy') format('truetype'),
+    url('fonts/icomoon.woff?2en4vy') format('woff'),
+    url('fonts/icomoon.svg?2en4vy#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-web_shear_img:before {
+  content: "\e93a";
+  color: #979797;
+}
+.icon-ad:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-add:before {
+  content: "\e901";
+  color: #406599;
+}
+.icon-add_sample:before {
+  content: "\e902";
+  color: #999;
+}
+.icon-app:before {
+  content: "\e903";
+}
+.icon-cellphone:before {
+  content: "\e904";
+}
+.icon-checkbox:before {
+  content: "\e905";
+  color: #e8e8e8;
+}
+.icon-checkbox_checked:before {
+  content: "\e906";
+  color: #60a3f5;
+}
+.icon-contactus:before {
+  content: "\e907";
+  color: #f85959;
+}
+.icon-copy:before {
+  content: "\e908";
+  color: #fff;
+}
+.icon-copy2:before {
+  content: "\e909";
+  color: #406599;
+}
+.icon-cross2:before {
+  content: "\e90a";
+  color: #60a3f5;
+}
+.icon-data:before {
+  content: "\e90b";
+  color: #898989;
+}
+.icon-delete:before {
+  content: "\e90c";
+  color: #898989;
+}
+.icon-deselect:before {
+  content: "\e90d";
+  color: #979797;
+}
+.icon-drag:before {
+  content: "\e90e";
+  color: #60a3f5;
+}
+.icon-edit:before {
+  content: "\e90f";
+  color: #fff;
+}
+.icon-edit2:before {
+  content: "\e939";
+}
+.icon-edit_publish:before {
+  content: "\e910";
+  color: #505050;
+}
+.icon-editor_bold:before {
+  content: "\e911";
+}
+.icon-editor_center:before {
+  content: "\e912";
+}
+.icon-editor_color:before {
+  content: "\e913";
+}
+.icon-editor_fontsize:before {
+  content: "\e914";
+}
+.icon-editor_italic:before {
+  content: "\e915";
+}
+.icon-editor_left:before {
+  content: "\e916";
+}
+.icon-editor_link:before {
+  content: "\e917";
+}
+.icon-editor_richicon:before {
+  content: "\e918";
+}
+.icon-editor_right:before {
+  content: "\e919";
+}
+.icon-editor_underline:before {
+  content: "\e91a";
+}
+.icon-editor_unlink:before {
+  content: "\e91b";
+}
+.icon-editpreview:before {
+  content: "\e91c";
+  color: #505050;
+}
+.icon-group_off:before {
+  content: "\e91d";
+  color: #d8d8d8;
+}
+.icon-group_on:before {
+  content: "\e91e";
+}
+.icon-last_step:before {
+  content: "\e91f";
+}
+.icon-left_arrow:before {
+  content: "\e920";
+  color: #2a90d7;
+}
+.icon-link:before {
+  content: "\e921";
+  color: #2a90d7;
+}
+.icon-movedown:before {
+  content: "\e922";
+  color: #898989;
+}
+.icon-moveup:before {
+  content: "\e923";
+  color: #898989;
+}
+.icon-music:before {
+  content: "\e924";
+  color: #505050;
+}
+.icon-nav_logo:before {
+  content: "\e925";
+  color: #fff;
+}
+.icon-next_step:before {
+  content: "\e926";
+}
+.icon-permission:before {
+  content: "\e927";
+  color: #446897;
+}
+.icon-preview:before {
+  content: "\e928";
+  color: #898989;
+}
+.icon-radio:before {
+  content: "\e929";
+  color: #e8e8e8;
+}
+.icon-radio_hover:before {
+  content: "\e92a";
+  color: #60a3f5;
+}
+.icon-refresh:before {
+  content: "\e92b";
+  color: #898989;
+}
+.icon-remind_small:before {
+  content: "\e92c";
+  color: #898989;
+}
+.icon-return_home:before {
+  content: "\e92d";
+  color: #505050;
+}
+.icon-save:before {
+  content: "\e92e";
+  color: #505050;
+}
+.icon-search:before {
+  content: "\e92f";
+  color: #60a3f5;
+}
+.icon-selectall:before {
+  content: "\e930";
+  color: #979797;
+}
+.icon-setting:before {
+  content: "\e931";
+}
+.icon-shear:before {
+  content: "\e932";
+}
+.icon-telphone:before {
+  content: "\e933";
+  color: #f85959;
+}
+.icon-telphone_left:before {
+  content: "\e934";
+  color: #f85959;
+}
+.icon-telphone_right:before {
+  content: "\e935";
+  color: #f85959;
+}
+.icon-theme_color:before {
+  content: "\e936";
+  color: #505050;
+}
+.icon-up_down:before {
+  content: "\e937";
+  color: #e8e8e8;
+}
+.icon-user:before {
+  content: "\e938";
+  color: #fff;
+}
