@@ -154,10 +154,14 @@ function generateFonts(options) {
   var eot = ttf.then(generateEot);
   var woff = ttf.then(generateWoff);
 
-  // 最后生成 html，这东西其实无所谓
+  // 最后生成 html
   var html = generateHtml(options);
+  var async_arr = [svg, ttf, eot, woff];
+  if(options.demoPage) {
+    async_arr.push(html);
+  }
 
-  return Promise.all([svg, ttf, eot, woff, html]);
+  return Promise.all(async_arr);
 }
 
 module.exports = generateFonts;

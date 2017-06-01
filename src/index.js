@@ -1,32 +1,49 @@
-var fs = require('fs');
-var path = require('path');
-var Q = require('q');
-var _ = require('underscore');
-var mkdirp = require('mkdirp');
+"use strict";
 
-var defer = require('./defer');
-var generator = require('./fontGenerator');
-var parser = require('./svgFontParser');
+let fs = require('fs');
+let path = require('path');
+let Q = require('q');
+let _ = require('underscore');
+let mkdirp = require('mkdirp');
 
-var DEFAULT_OPTIONS = {
+let defer = require('./defer');
+let generator = require('./fontGenerator');
+let parser = require('./svgFontParser');
+
+let DEFAULT_OPTIONS = {
   readFiles: true,
   writeFiles: true,
   fontName: 'iconfont',
   startCodePoint: 0xE000,
   src: '.',
   dest: '.',
-  descent: 0
+  descent: 0,
+  demoPage: 1
 };
 
-/**
- * 入口函数，根据参数生成字体或 icon 对象
- *
- * @param {Object} options 传递参数，详见 readme
- * @returns {Promise}
- */
-function builder(options) {
-  console.log('builder :::::', options)
+let entryConf = require('../entry.conf.js');
+let svgfiles = fs.readdirSync(entryConf.src);
+let prefix = entryConf.prefix || '';
+svgfiles = svgfiles.map(fname => {
+    return {
+        'name':prefix + fname.slice(0, fname.length -4),
+        'file':fname
+    }
+});
+// console.log(svgfiles);
 
+
+let DEFAULT_CONF = {
+    icons: svgfiles,//指定 icon 的名字
+    src: '',
+    dest: '',
+    fontName: 'icofonts',
+    descent: 0,// 整体偏移量
+};
+let options = _.extend({}, DEFAULT_CONF,entryConf);
+builder(options).catch(e => console.log('err:::', e));
+
+function builder(options) {
   options = _.extend({}, DEFAULT_OPTIONS, options);
   options.ascent = 1024 - options.descent;
 
@@ -48,13 +65,9 @@ function builder(options) {
     });
 }
 
-/**
- * 字体写入方法，生成四种字体
- *
- * @param {Array<String>} fonts 字体内容数组
- * @param {Object} options 参数对象
- * @returns {Promise}
- */
+
+
+//字体写入方法，生成四种字体
 function writeFonts(fonts, options) {
   var type = ['svg', 'ttf', 'eot', 'woff', 'html'];
 
@@ -74,15 +87,9 @@ function writeFonts(fonts, options) {
   return Promise.all(fontsQ);
 }
 
-/**
- * 判断是否传入 icons 对象，选择排查或补充
- *
- * @param {Object} options 参数对象
- * @returns {Promise}
- */
+// 判断是否传入 icons 对象，选择排查或补充
 function fillIcons(options) {
   // 如果有 icons 数据，确保数据不为空
-  if (options.icons) {
     var def = defer();
     var baseCode = options.startCodePoint;
     var codeSet = options.icons.map(function(icon) {
@@ -105,34 +112,9 @@ function fillIcons(options) {
       }
       icon.xmlCode = '&#x' + icon.codepoint.toString(16) + ';';
       icon.cssCode = '\\' + icon.codepoint.toString(16);
-      // 有 d 的前提下可以不写 file
-      if (!options.readFiles && !icon.d) {
-        def.reject(new Error('icon ' + icon.name + ' has no path data(d)'));
-        return false;
-      }
     });
-
     def.resolve(options.icons);
     return def.promise;
-  } else {
-    // 如果没有 icons 数据，从 src 里自动生成
-    var base = options.startCodePoint;
-
-    return Q.nfcall(fs.readdir, options.src)
-      .then(function(files) {
-        var svgFiles = _.filter(files, function(file) {
-          return /\.svg$/i.test(file);
-        });
-
-        return _.map(svgFiles, function(file) {
-          return {
-            name: 'glyph-' + base,
-            codepoint: base++,
-            file: file
-          };
-        });
-      });
-  }
 }
 
 module.exports = builder;
