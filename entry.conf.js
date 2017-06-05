@@ -7,5 +7,5 @@ module.exports = {
     // 生成字体名称
     fontName: 'icomoon',//font-family 的名字
     prefix: 'icon-',
-    demoPage: 0
+    demoPage: 1
 }

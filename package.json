@@ -7,13 +7,6 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
-  "keywords": [
-    "iconfont svg ttf png eot woff"
-  ],
-  "author": [
-    "missmiss",
-    "minghao.yu"
-  ],
   "dependencies": {
     "handlebars": "^4.0.5",
     "mkdirp": "^0.5.1",

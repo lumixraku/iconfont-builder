@@ -28,36 +28,38 @@ var multiStream = require('./multiStream');
  */
 function generateSvg(icons, svgOpts, options) {
   var stream;
-  var font = new Buffer(0);
+  var fontBuffer = new Buffer('','utf-8')//new Buffer(0);
   var def = defer();
 
   // 进行内部自定义设定
   svgOpts.normalize = true;   // 大小统一
   svgOpts.fontHeight = 1024;  // 高度统一为1024
   svgOpts.round = 1000;       // path值保留三位小数
-  svgOpts.log = function(){}; // 沉默控制台输出
+  // svgOpts.log = function(){}; // 沉默控制台输出
 
-  stream = s2s(svgOpts)
-    .on('data', function(data) {
-      font = Buffer.concat([font, data]);
-    })
-    .on('error', function(err) {
-      def.reject(err);
-    })
-    .on('finish', function() {
-      def.resolve(font.toString());
-    });
+
+  stream = s2s(svgOpts);
+  // 这个流还要给 ttf eot  woff 字体用
+  // 不应该再这里全部 pipe 掉
+  // stream.pipe(fs.createWriteStream(options.dest + options.fontName + '.svg'))
+  // pipe的话会导致读入的 buffer 不完整
+
+  stream.on('data', function(data) {
+    fontBuffer = Buffer.concat([fontBuffer, data]);
+  })
+  .on('error', function(err) {
+    def.reject(err);
+  })
+  .on('finish', function() {
+    // console.log('read finish', fontBuffer.toString());
+    def.resolve(fontBuffer.toString());
+  });
 
   _.each(icons, function(icon) {
     try {
       var glyph;
-      // 优先使用 buffer
-      if (icon.buffer && icon.buffer instanceof Buffer) {
-        glyph = multiStream.createReadStream(icon.buffer);
-      } else {
-        var iconFile = path.join(options.src, icon.file);
-        glyph = fs.createReadStream(iconFile);
-      }
+      var iconFile = path.join(options.src, icon.file);
+      glyph = fs.createReadStream(iconFile);
 
       glyph.metadata = {
         name: icon.name,
@@ -80,6 +82,9 @@ function generateSvg(icons, svgOpts, options) {
  * @param {String} svgFont
  */
 function generateTtf(svgFont) {
+// svg2ttf使用
+// var ttf = svg2ttf(fs.readFileSync('myfont.svg', 'utf8'), {});
+// fs.writeFileSync('myfont.ttf', new Buffer(ttf.buffer));
   var font = svg2ttf(svgFont);
   return new Buffer(font.buffer);
 }
@@ -116,7 +121,7 @@ function generateHtml(options) {
   return Q.nfcall(fs.readFile, tmpPath, 'utf-8')
     .then(function(source) {
       var template = handlebars.compile(source);
-      console.log('templdate:::', template, options)
+      // console.log('templdate:::', template, options)
       return template(options);
     });
 }
@@ -149,18 +154,18 @@ function generateFonts(options) {
   }
 
   // ttf 依赖 svg 的生成
+  //PS then 返回一个 Promise
   var ttf = svg.then(generateTtf);
+
   // eot 和 woff 依赖 tff 的生成
   var eot = ttf.then(generateEot);
   var woff = ttf.then(generateWoff);
 
-  // 最后生成 html
-  var html = generateHtml(options);
   var async_arr = [svg, ttf, eot, woff];
+  // 最后生成 html
   if(options.demoPage) {
-    async_arr.push(html);
+    async_arr.push(generateHtml(options));
   }
-
   return Promise.all(async_arr);
 }
 
