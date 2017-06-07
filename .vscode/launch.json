@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "/Users/luonan/Sites/iconfont-builder/start.js"
+            "program": "/Users/luonan/Sites/iconfont-builder/src/index.js"
         }
     ]
 }

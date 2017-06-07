@@ -1,6 +1,7 @@
 # idea ignore
 .idea/
 
+
 # temp ignore
 *.log
 *.cache
@@ -18,3 +19,6 @@ Thumbs.db
 # test ignore
 /test/builder/dest/
 !.hodor
+
+dist/
+dest/

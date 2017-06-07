@@ -30,9 +30,9 @@ DEFAULT_OPTIONS.icons = svgfiles.map(fname => {
     'file': fname  //file 是后面 fontGenerator 读取文件用
   };
 });
-
 let options = _.extend({}, DEFAULT_OPTIONS, entryConf);
-builder(options).catch(e => console.log('err:::', e));
+
+
 
 function builder(options) {
   options.ascent = 1024 - options.descent;
@@ -42,33 +42,11 @@ function builder(options) {
   options.icons = icons;
 
   //then 的 fn 的参数都是前一个 promise resolve 的结果
-  return fontGenerator(options).then(function (fontDatas) {
-    return writeFonts(fontDatas, options);
+  mkdirp(options.dest, function(){
+    fontGenerator(options);
   });
 }
 
-
-
-//字体写入方法，生成四种字体
-function writeFonts(fontDatas, options) {
-  let type = ['svg', 'ttf', 'eot', 'woff', 'html'];
-  let folderPath = options.dest;
-
-  //写之前先保证目录存在
-  return new Promise(function (resolve, reject) {
-    mkdirp(folderPath, function (err) {
-      err ? reject(err) : resolve()
-    });
-  }).then(function () {
-
-    fontDatas.map(function (fontData, i) {
-      let filePath = path.join(options.dest, options.fontName + '.' + type[i]);
-      let writeFileQ = Q.nfcall(fs.writeFile, filePath, fontData);
-      fs.writeFileSync(filePath, fontData);
-    });
-  }, function(err){
-  });
-}
 
 // 判断是否传入 icons 对象，选择排查或补充
 function fillIcons(options) {
@@ -101,5 +79,11 @@ function fillIcons(options) {
 
 
 }
+
+
+
+
+
+builder(options);
 
 module.exports = builder;

@@ -1,22 +1,25 @@
-/**
- * 生成eot, svg, ttf, woff 四种格式的文件
- * 支持只返回各个字体的 path-d 而不生成字体文件
- * 支持通过仅传入 d 来生成字体
- */
+"use strict";
 
-var fs = require('fs');
-var path = require('path');
-var Q = require('q');
-var _ = require('underscore');
-var s2s = require('svgicons2svgfont');
-var svg2ttf = require('svg2ttf');
-var ttf2eot = require('ttf2eot');
-var ttf2woff = require('ttf2woff');
-var handlebars = require('handlebars');
+// Buffer 类以一种更优与更适合 Node.js 用例的方式实现了 Uint8Array API。
+// 你可以认为 Buffer 就是 Unit8Array
 
-var defer = require('./defer');
-var parser = require('./svgFontParser');
-var multiStream = require('./multiStream');
+let fs = require('fs');
+let path = require('path');
+let Q = require('q');
+let _ = require('underscore');
+let svgicons2svgfont = require('svgicons2svgfont');
+let svg2ttf = require('svg2ttf');
+let ttf2eot = require('ttf2eot');
+let ttf2woff = require('ttf2woff');
+let handlebars = require('handlebars');
+
+let defer = require('./defer');
+// let parser = require('./svgFontParser');
+// let multiStream = require('./multiStream');
+let entryConf = require('../entry.conf.js');
+//生成字体的目录
+let destFile = entryConf.dest + entryConf.fontName;
+
 
 /**
  * 生成 svg 字体
@@ -27,86 +30,83 @@ var multiStream = require('./multiStream');
  * @returns {Promise}
  */
 function generateSvg(icons, svgOpts, options) {
-  var stream;
-  var fontBuffer = new Buffer('','utf-8')//new Buffer(0);
-  var def = defer();
+  let fontStream = svgicons2svgfont(svgOpts);
+  let fontSvgPath = destFile + '.svg';
+  let def = defer();
+  // Setting the font destination
+  fontStream.pipe(fs.createWriteStream(fontSvgPath))
+    .on('finish',function() {
+      def.resolve();
+      console.log('Font successfully created!')
+    })
+    .on('error',function(err) {
+      console.log(err);
+    });
 
-  // 进行内部自定义设定
-  svgOpts.normalize = true;   // 大小统一
-  svgOpts.fontHeight = 1024;  // 高度统一为1024
-  svgOpts.round = 1000;       // path值保留三位小数
-  // svgOpts.log = function(){}; // 沉默控制台输出
-
-
-  stream = s2s(svgOpts);
-  // 这个流还要给 ttf eot  woff 字体用
-  // 不应该再这里全部 pipe 掉
-  // stream.pipe(fs.createWriteStream(options.dest + options.fontName + '.svg'))
-  // pipe的话会导致读入的 buffer 不完整
-
-  stream.on('data', function(data) {
-    fontBuffer = Buffer.concat([fontBuffer, data]);
-  })
-  .on('error', function(err) {
-    def.reject(err);
-  })
-  .on('finish', function() {
-    // console.log('read finish', fontBuffer.toString());
-    def.resolve(fontBuffer.toString());
-  });
-
+  // Writing glyphs
+  // let glyph1 = fs.createReadStream('./svg/add.svg');
+  // glyph1.metadata = {
+  //   unicode: ['\uE001\uE002'],
+  //   name: 'add'
+  // };
+  // fontStream.write(glyph1);
   _.each(icons, function(icon) {
     try {
-      var glyph;
-      var iconFile = path.join(options.src, icon.file);
+      let glyph;
+      let iconFile = path.join(options.src, icon.file);
       glyph = fs.createReadStream(iconFile);
 
       glyph.metadata = {
         name: icon.name,
         unicode: [String.fromCharCode(icon.codepoint)]
       };
-      stream.write(glyph);
+      fontStream.write(glyph);
     } catch(e) {
       def.reject(e);
       return false;
     }
   });
 
-  stream.end();
+  // Do not forget to end the stream
+  fontStream.end();
   return def.promise;
+
 }
 
-/**
- * 生成 ttf 字体，依赖于 svg 字体的生成
- *
- * @param {String} svgFont
- */
-function generateTtf(svgFont) {
-// svg2ttf使用
-// var ttf = svg2ttf(fs.readFileSync('myfont.svg', 'utf8'), {});
-// fs.writeFileSync('myfont.ttf', new Buffer(ttf.buffer));
-  var font = svg2ttf(svgFont);
-  return new Buffer(font.buffer);
+function generateTtf(param) {
+  // svg2ttf使用官方例子
+  // let ttf = svg2ttf(fs.readFileSync('myfont.svg', 'utf8'), {});
+  // fs.writeFileSync('myfont.ttf', new Buffer(ttf.buffer));
+  // 可见svg2ttf 接收一个输入流
+
+
+  let fontTtfPath = destFile + '.ttf';
+  let ttf = svg2ttf(fs.readFileSync(destFile + '.svg', 'utf8'), {});
+  //ttf.buffer 是 Uint8Array
+  //第二参数的类型 <string> | <Buffer> | <Uint8Array>
+  fs.writeFileSync(fontTtfPath, new Buffer(ttf.buffer));
+  return ttf.buffer;
+  // return fontTtfPath;
 }
 
-/**
- * 生成 woff 字体，依赖于 ttf 字体的生成
- *
- * @param {String} ttfFont
- */
-function generateWoff(ttfFont) {
-  var font = ttf2woff(new Uint8Array(ttfFont));
-  return new Buffer(font.buffer);
+
+function generateWoff(fontTtfBuffer) {
+  //看源码  ttf2woff接收的是一个数组(应该是 Uint8Array) 并且会将数组转为 Buffer (Buffer.from接收的数组实际上也是 Uint8Array数组)
+  let fontWoffPath = destFile + '.woff';
+  let woff = ttf2woff(fontTtfBuffer);
+  // fs.writeFileSync(fontWoffPath, new Buffer(woff.buffer));
+  fs.writeFileSync(fontWoffPath, woff.buffer);
+
 }
 
-/**
- * 生成 eot 字体，依赖于 ttf 字体的生成
- *
- * @param {String} ttfFont
- */
+
+
+
 function generateEot(ttfFont) {
-  var font = ttf2eot(new Uint8Array(ttfFont));
-  return new Buffer(font.buffer);
+  let fontEotPath = destFile + '.eot';
+  let eot = ttf2eot(new Uint8Array(ttfFont));
+  fs.writeFileSync(fontEotPath, eot.buffer);
+  // return new Buffer(font.buffer);
 }
 
 /**
@@ -116,13 +116,13 @@ function generateEot(ttfFont) {
  */
 
 function generateHtml(options) {
-  var tmpPath = path.join(__dirname, '../template/html.handlebars');
+  let tmpPath = path.join(__dirname, '../template/html.handlebars');
   options.timestamp = +new Date;
   return Q.nfcall(fs.readFile, tmpPath, 'utf-8')
     .then(function(source) {
-      var template = handlebars.compile(source);
-      // console.log('templdate:::', template, options)
-      return template(options);
+      let fontHtmlPath = destFile + '.html';
+      let template = handlebars.compile(source);
+      fs.writeFileSync(fontHtmlPath, template(options));
     });
 }
 
@@ -132,41 +132,32 @@ function generateHtml(options) {
  * @param {Object} options 生成字体参数对象
  * @returns {Promise}
  */
-function generateFonts(options) {
+function fontGenerator(options) {
   // 使用 ascent 和 descent 进行字体的基线调整
-  var svgOpts = _.pick(options,
+  let svgOpts = _.pick(options,
     'fontName', 'ascent', 'descent'
   );
-  var svg;
 
-  // 首先进行 svg 的生成
-  // 当 readFiles 为 false 时，使用 d 生成
-  // 否则使用文件生成
-  if (!options.readFiles) {
-    svg = parser.getSvgIcon(options);
-  } else {
-    svg = generateSvg(options.icons, svgOpts, options);
-  }
-
-  // 当不需要 writeFiles 时不需要生成 ttf/eot/woff
-  if (!options.writeFiles) {
-    return svg;
-  }
+  //不做下面配置的话，会有如下警告
+  // The provided icons does not have the same height it could lead to unexpected results.
+  // Using the normalize option could solve the problem.
+  svgOpts = Object.assign({}, svgOpts, {
+    normalize: 1,// 大小统一
+    fontHeight: 1024, // 高度统一为1024
+    round: 1000, // path值保留三位小数
+    log: ()=>{} // 沉默控制台输出
+  });
+  let svg = generateSvg(options.icons, svgOpts, options);
 
   // ttf 依赖 svg 的生成
   //PS then 返回一个 Promise
-  var ttf = svg.then(generateTtf);
-
-  // eot 和 woff 依赖 tff 的生成
-  var eot = ttf.then(generateEot);
-  var woff = ttf.then(generateWoff);
-
-  var async_arr = [svg, ttf, eot, woff];
+  let ttf = svg.then(generateTtf);
+  let woff = ttf.then(generateWoff);
+  let eot = ttf.then(generateEot);
   // 最后生成 html
   if(options.demoPage) {
-    async_arr.push(generateHtml(options));
+    generateHtml(options);
   }
-  return Promise.all(async_arr);
 }
 
-module.exports = generateFonts;
+module.exports = fontGenerator;
